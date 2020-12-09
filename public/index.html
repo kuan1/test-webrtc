@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发起视频</title>
+  <style>
+    body {
+      text-align: center;
+    }
+
+    video {
+      width: 80%;
+      height: 80vh;
+      background-color: black;
+      display: block;
+      margin: 20px auto;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body>
+  <video id="video" autoplay playsinline></video>
+  <button class="btn">发起</button>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./offer.js"></script>
+
+  <script>
+    function delay() {
+      return new Promise(resolve => setTimeout(resolve, 3000))
+    }
+
+    let cacheInitData = null
+
+    document.querySelector('.btn').onclick = async function () {
+      if (!cacheInitData) {
+        cacheInitData = await init()
+      }
+      // 初始化
+      const res = await axios({
+        url: '/api/cache/offer',
+        method: 'post',
+        data: { data: cacheInitData }
+      })
+      window.open('answer.html', 'answer')
+      await delay()
+      startAccess()
+      console.log('发起成功')
+    }
+
+    async function startAccess() {
+      const { data } = await axios('/api/cache/anwser')
+      console.log('startAccess', data)
+      if (data) {
+        accessRemote(data)
+      } else {
+        await delay()
+        startAccess()
+      }
+    }
+
+    // 设置响应信息 
+    // accessRemote()
+
+  </script>
+</body>
+
+</html>

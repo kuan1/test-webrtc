@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>接受邀请视频</title>
+  <style>
+    video {
+      width: 80%;
+      height: 80vh;
+      background-color: black;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body>
+  <video id="video" autoplay playsinline></video>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./answer.js"></script>
+  <script>
+    function delay() {
+      return new Promise(resolve => setTimeout(resolve, 3000))
+    }
+    // 初始化
+    init()
+    async function init() {
+      try {
+        const { data } = await axios({
+          url: '/api/cache/offer',
+        })
+        console.log(data)
+        if (data) {
+          const r = await start(data)
+          axios({
+            url: '/api/cache/anwser',
+            method: 'post',
+            data: { data: r }
+          })
+        } else {
+          await delay()
+          init()
+        }
+      } catch (e) {
+        console.error(e)
+        init()
+      }
+    }
+  </script>
+</body>
+
+</html>
