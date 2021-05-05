@@ -1,4 +1,4 @@
 #!/bin/bash
 cd public
-scp -r * tencent:/var/www/web/test-webrtc
+scp -r * tencent2:/var/www/web/test-webrtc
 cd -
