@@ -1,13 +1,18 @@
 const video = document.querySelector('#video')
 const pc = new window.RTCPeerConnection()
 
+// 接收到流
+pc.onaddstream = function (e) {
+  console.log('add stream', e.stream)
+  video.srcObject = e.stream
+}
 
 // 获取icecondidate
 let icecandidades = []
 function getCandidades() {
   if (icecandidades.length) return icecandidades
   let tmp = []
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     pc.onicecandidate = function (e) {
       if (e.candidate) {
         tmp.push(e.candidate)
@@ -21,7 +26,7 @@ function getCandidades() {
 
 // 添加icecondidate
 function addIceCandidate(condidates = []) {
-  condidates.forEach(condidate => {
+  condidates.forEach((condidate) => {
     pc.addIceCandidate(new RTCIceCandidate(condidate))
   })
 }
@@ -34,18 +39,15 @@ async function createAnswer(offer) {
   //   audio: false
   // })
   pc.addStream(stream)
-  video.srcObject = stream
+  // video.srcObject = stream
   await pc.setRemoteDescription(offer)
   await pc.setLocalDescription(await pc.createAnswer())
   return pc.localDescription
 }
 
 // 初始化
-async function start(data) {
-  const [condidades, answer] = await Promise.all([
-    getCandidades(),
-    createAnswer(data.offer),
-  ])
+async function startAnswer(data) {
+  const [condidades, answer] = await Promise.all([getCandidades(), createAnswer(data.offer)])
   addIceCandidate(data.condidades)
   // console.log('condidade', JSON.stringify(condidades))
   // console.log('offer', JSON.stringify(offer))

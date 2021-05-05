@@ -4,66 +4,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>发起视频</title>
+  <title>TV</title>
   <style>
     body {
       text-align: center;
     }
 
     video {
-      width: 80%;
-      height: 80vh;
-      background-color: black;
-      display: block;
+      width: 500px;
+      height: 300px;
       margin: 20px auto;
-      object-fit: contain;
+      display: block;
+      background-color: #eee;
     }
   </style>
 </head>
 
 <body>
-  <video id="video" autoplay playsinline></video>
-  <button class="btn">发起</button>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="./offer.js"></script>
+  <div id="container">
+    <video id="gum-local" autoplay playsinline></video>
+    <button id="media-btn">打开摄像头</button>
+    <button id="screen-btn">分享屏幕屏幕</button>
+    <button id="media-close-btn">关闭stream</button>
+  </div>
 
   <script>
-    function delay() {
-      return new Promise(resolve => setTimeout(resolve, 3000))
+    const video = document.querySelector('video');
+    document.querySelector('#media-btn').addEventListener('click', openMedia);
+    document.querySelector('#media-close-btn').addEventListener('click', stop);
+    document.querySelector('#screen-btn').addEventListener('click', shareScreen);
+
+    let stream
+
+    video.src = "http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"
+
+    async function openMedia(e) {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      video.srcObject = stream;
     }
 
-    let cacheInitData = null
-
-    document.querySelector('.btn').onclick = async function () {
-      if (!cacheInitData) {
-        cacheInitData = await init()
-      }
-      // 初始化
-      const res = await axios({
-        url: '/api/cache/offer',
-        method: 'post',
-        data: { data: cacheInitData }
+    async function shareScreen() {
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: false
       })
-      window.open('answer.html', 'answer')
-      await delay()
-      startAccess()
-      console.log('发起成功')
+      video.srcObject = stream;
     }
 
-    async function startAccess() {
-      const { data } = await axios('/api/cache/anwser')
-      console.log('startAccess', data)
-      if (data) {
-        accessRemote(data)
-      } else {
-        await delay()
-        startAccess()
-      }
+    function stop() {
+      stream && stream.getTracks().map(function (track) {
+        console.log(track)
+        track.stop();
+      });
     }
-
-    // 设置响应信息 
-    // accessRemote()
-
   </script>
 </body>
 
