@@ -40,7 +40,7 @@ const user = {
 }
 
 // 连接socket
-const ws = new WebSocket(`ws://121.36.255.88:8001?code=${user.code}`)
+const ws = new WebSocket(`wss://www.luzhongkuan.cn/websocket?code=${user.code}`)
 ws.onmessage = (e) => {
   const { success, data, event } = json(e.data)
 
