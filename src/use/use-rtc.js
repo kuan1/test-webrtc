@@ -55,8 +55,8 @@ export default () => {
     pc.addStream(stream)
 
     const offer = await pc.createOffer({
-      offerToReceiveAudio: true,
-      offerToReceiveVideo: true,
+      offerToReceiveAudio: 1,
+      offerToReceiveVideo: 1,
     })
 
     await pc.setLocalDescription(offer)
@@ -88,8 +88,9 @@ export default () => {
 
     pc.addStream(stream)
     await pc.setRemoteDescription(offer)
-    await pc.setLocalDescription(await pc.createAnswer())
-    return pc.localDescription
+    const answer = await pc.createAnswer()
+    await pc.setLocalDescription(answer)
+    return answer
   }
 
   // 初始化

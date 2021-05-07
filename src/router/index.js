@@ -18,6 +18,11 @@ const router = createRouter({
       path: '/video',
       component: () => import('@/views/video/index.vue'),
     },
+    {
+      name: 'test',
+      path: '/test',
+      component: () => import('@/views/test/index.vue'),
+    },
   ],
 })
 

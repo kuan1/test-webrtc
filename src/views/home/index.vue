@@ -6,6 +6,9 @@
     <router-link :to="{ name: 'data' }">
       <button class="halo-btn">文字聊天</button>
     </router-link>
+    <router-link :to="{ name: 'test' }">
+      <button class="halo-btn">测试页面</button>
+    </router-link>
   </div>
 </template>
 
