@@ -4,8 +4,8 @@ import { state, extra } from '@/store'
 
 import { accessAnswer, closeVideoPipe } from './videoPipe'
 
-// const ws = new WebSocket(`wss://www.luzhongkuan.cn/websocket?code=${state.localCode}`)
-const ws = new WebSocket(`ws://localhost:8001/websocket?code=${state.localCode}`)
+const ws = new WebSocket(`wss://www.luzhongkuan.cn/websocket?code=${state.localCode}`)
+// const ws = new WebSocket(`ws://localhost:8001/websocket?code=${state.localCode}`)
 
 ws.onmessage = (e) => {
   const { success, data, event, fromUser } = json(e.data)

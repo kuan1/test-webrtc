@@ -1,0 +1,1 @@
+rsync -av dist/* tencent2:/var/www/web/test-webrtc
