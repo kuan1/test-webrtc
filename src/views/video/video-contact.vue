@@ -3,13 +3,7 @@
     <video ref="remoteVideo" class="remote-video" autoplay />
     <video ref="localVideo" class="local-video" autoplay />
 
-    <!-- <button
-      v-if="state.confirm === 'offer'"
-      class="halo-btn halo-btn-primary"
-      @click="confirmOffer"
-    >
-      确定链接
-    </button> -->
+    <img src="./images/hangup.png" class="hangup" @click="closeVideoPipe" />
   </div>
 </template>
 
@@ -23,13 +17,14 @@ export default {
   setup() {
     const confirmOffer = () => {};
 
-    onMounted(initVideoPipe);
+    onMounted(() => initVideoPipe());
 
-    onBeforeUnmount(closeVideoPipe);
+    onBeforeUnmount(() => closeVideoPipe());
 
     return {
       localVideo,
       remoteVideo,
+      closeVideoPipe,
     };
   },
 };
@@ -54,5 +49,16 @@ export default {
   z-index: 100;
   background-color: rgba(#333, 0.7);
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.018);
+}
+
+.hangup {
+  position: fixed;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
 }
 </style>

@@ -1,6 +1,6 @@
 import { setTransitionHooks, unref } from 'vue'
 import { state, localVideo, remoteVideo, extra } from '@/store'
-import { sendOffer, sendAnswer } from '@/utils/ws'
+import { sendOffer, sendAnswer, closeVideo } from '@/utils/ws'
 
 class VideoPipe {
   constructor(localVideo, remoteVideo, localCode, remoteCode, constraints) {
@@ -153,4 +153,6 @@ export const closeVideoPipe = () => {
   if (!videoPipe) return
   videoPipe.close()
   videoPipe = null
+  state.type = ''
+  closeVideo()
 }

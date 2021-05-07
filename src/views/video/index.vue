@@ -1,38 +1,31 @@
 <template>
   <div class="container">
-    <header class="header ellipsis">我的账号: {{ code }}</header>
+    <header class="header ellipsis">我的账号: {{ state.localCode }}</header>
 
     <input placeholder="输入要好友账号" class="halo-input" v-model="tmpCode" />
 
     <div class="buttons">
-      <button class="halo-btn" @click="copy">复制我的账号</button>
+      <button class="halo-btn" @click="copy">复制邀请连接</button>
       <button
         class="halo-btn halo-btn-primary"
-        :disabled="!(tmpCode || friendCode)"
+        :disabled="!(tmpCode || state.remoteCode)"
         @click="callFriend"
       >
-        拨打好友账号
+        拨打好友视频
       </button>
     </div>
   </div>
 
-  <video-contact
-    v-if="friendCode"
-    :type="type"
-    :code="friendCode"
-    :offer="offer"
-    @offer="sendOffer"
-    @answer="sendAnswer"
-  />
+  <video-contact v-if="state.type" :type="state.type" />
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import copy from "@halobear/utils/copy";
 import { toast } from "@halobear/js-feedback";
+import { useRoute } from "vue-router";
 
-import useSocket from "@/use/use-socket";
-import useRTC from "@/use/use-rtc";
+import { state } from "@/store";
 
 import VideoContact from "./video-contact.vue";
 
@@ -41,35 +34,31 @@ export default {
     VideoContact,
   },
   setup() {
-    const {
-      type,
-      code,
-      friendCode,
-      tmpCode,
-      sendOffer,
-      sendAnswer,
-      answer,
-      offer,
-    } = useSocket();
+    const tmpCode = ref(state.remoteCode);
+    const route = useRoute();
 
     const callFriend = () => {
       if (!tmpCode.value) return toast("请输入好友账号");
-      if (tmpCode.value === code.value) return toast("不可以给自己打电话");
-      friendCode.value = tmpCode.value;
-      type.value = "offer";
+      if (tmpCode.value === state.localCode) return toast("不可以给自己打电话");
+      state.remoteCode = tmpCode.value;
+      state.type = "offer";
     };
+    onMounted(() => {
+      const { friend } = route.query;
+      if (friend) {
+        state.remoteCode = friend;
+        tmpCode.value = friend;
+      }
+    });
 
     return {
-      type,
-      code,
-      friendCode,
+      state,
       tmpCode,
-      sendOffer,
-      sendAnswer,
-      offer,
       callFriend,
-      copy: () => {
-        const success = copy(code.value);
+      copy() {
+        const success = copy(
+          `${window.location.origin}${location.pathname}#/video?friend=${state.localCode}`
+        );
         success && toast("复制成功");
       },
     };
@@ -77,7 +66,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "@/styles/variable.less";
 
 .container {
