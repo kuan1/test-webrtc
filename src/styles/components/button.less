@@ -1,0 +1,71 @@
+.@{halo}btn {
+  display: inline-block;
+  color: @body-color;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  padding: 0.4em 0.8em;
+  appearance: none;
+  font-size: 16px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 0 transparent;
+  outline: 0;
+  &.active,
+  &:active {
+    background-image: none;
+    outline: 0;
+  }
+  &:disabled,
+  &[disabled],
+  &.disabled {
+    opacity: 0.65;
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.@{halo}btn {
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
+}
+.@{halo}btn-primary {
+  .button-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+}
+.@{halo}btn-secondary {
+  .button-variant(@btn-secondary-color; @btn-secondary-bg; @btn-secondary-border);
+}
+.@{halo}btn-success {
+  .button-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+}
+.@{halo}btn-info {
+  .button-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
+}
+.@{halo}btn-warning {
+  .button-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
+}
+.@{halo}btn-danger {
+  .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+}
+
+.@{halo}outline-btn-primary {
+  .button-outline-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+}
+.@{halo}outline-btn-secondary {
+  .button-outline-variant(@btn-secondary-color; @btn-secondary-bg; @btn-secondary-border);
+}
+.@{halo}outline-btn-success {
+  .button-outline-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+}
+.@{halo}outline-btn-info {
+  .button-outline-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
+}
+.@{halo}outline-btn-warning {
+  .button-outline-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
+}
+.@{halo}outline-btn-danger {
+  .button-outline-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+}

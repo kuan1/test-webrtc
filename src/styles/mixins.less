@@ -1,0 +1,117 @@
+// 文字溢出省略
+.ellipsis(@lines: 1, @width: 100%) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  & when (@lines = 1) {
+    width: @width;
+    white-space: nowrap;
+  }
+  & when (@lines > 1) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @lines;
+    word-break: break-all;
+  }
+}
+
+.word-break() {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+/**
+  * 750设计稿情况下1px在手机上展示0.5
+  */
+.one-px(@direction: bottom, @color: #eee) {
+  position: relative;
+  &::after {
+    content: '';
+    display: block;
+    background-color: @color;
+    transform: scaleY(0.5);
+    @{direction}: 0;
+    position: absolute;
+    & when (@direction = top),  (@direction = bottom) {
+      height: 1px;
+      right: 0;
+      left: 0;
+      transform: scaleY(0.5);
+    }
+
+    & when (@direction = right), (@direction = left) {
+      width: 1px;
+      bottom: 0;
+      top: 0;
+      transform: scaleX(0.5);
+    }
+  }
+}
+
+.button-variant(@color; @background; @border) {
+  color: @color;
+  background-color: @background;
+  border-color: @border;
+  &:hover {
+    color: @color;
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 2%);
+  }
+  &:focus,
+  &.focus {
+    color: @color;
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 5%);
+    box-shadow: 0 0 0 0.15em lighten(@background, 10%);
+  }
+  &:active,
+  &.active {
+    color: @color;
+    background-color: darken(@background, 10%);
+    background-image: none;
+    border-color: darken(@border, 3%);
+  }
+  &.disabled,
+  &[disabled] {
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: @background;
+      border-color: @border;
+    }
+  }
+}
+
+.button-outline-variant(@color; @background; @border) {
+  color: @background;
+  background-color: @white;
+  border-color: @border;
+  &:hover {
+    color: @color;
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 2%);
+  }
+  &:focus,
+  &.focus {
+    color: @color;
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 5%);
+    box-shadow: 0 0 0 0.15em lighten(@background, 10%);
+  }
+  &:active,
+  &.active {
+    color: @color;
+    background-color: darken(@background, 10%);
+    background-image: none;
+    border-color: darken(@border, 3%);
+  }
+  &.disabled,
+  &[disabled] {
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: @background;
+      border-color: @border;
+    }
+  }
+}
