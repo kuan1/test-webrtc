@@ -7,6 +7,15 @@ import { accessAnswer, closeVideoPipe } from './videoPipe'
 const ws = new WebSocket(`wss://www.luzhongkuan.cn/websocket?code=${state.localCode}`)
 // const ws = new WebSocket(`ws://localhost:8001/websocket?code=${state.localCode}`)
 
+let timer
+// nginx 默认一分钟断开链接
+ws.onopen = () => {
+  if (timer) clearInterval(timer)
+  timer = setInterval(() => {
+    ws.send('ping')
+  }, 50 * 1000)
+}
+
 ws.onmessage = (e) => {
   const { success, data, event, fromUser } = json(e.data)
   console.log('socket->', data)
@@ -46,6 +55,11 @@ ws.onmessage = (e) => {
     default:
       break
   }
+}
+
+ws.onclose = () => {
+  if (timer) clearInterval(timer)
+  closeVideoPipe()
 }
 
 function sendToUser(data, event = 'toUser', toUser = state.remoteCode) {
