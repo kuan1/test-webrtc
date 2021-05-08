@@ -50,7 +50,7 @@ function createChatserver(server) {
           break
         case 'sendAnswer':
           currentUser.friend = toUser
-          sendOffer(ws, data, toUser, code)
+          sendAnswer(ws, data, toUser, code)
           break
         case 'friendClose':
           sendToUser({ friend: currentUser.friend }, currentUser.friend, code, 'friendClose')
@@ -98,7 +98,7 @@ function sendOffer(ws, data, toUser, fromUser) {
 }
 
 // 回复answer
-function sendOffer(ws, data, toUser, fromUser) {
+function sendAnswer(ws, data, toUser, fromUser) {
   let connect = toUser && connection.find((item) => item.code === toUser)
   if (!connect) {
     return ws.success({}, 'send answer fail')
