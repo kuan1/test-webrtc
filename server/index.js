@@ -63,13 +63,13 @@ function createChatserver(server) {
 
     // 关闭
     ws.on('close', () => {
-      const closedConnection = connection.filter(({ ws }) => ws.readyState !== ws.OPEN)
+      const closedConnection = connection.filter(({ ws }) => ws.readyState === ws.CLOSED)
       // 通知关闭
       closedConnection.forEach(({ code, friend }) => {
         sendToUser({ friend: code }, friend, code, 'friendClose')
       })
 
-      connection = connection.filter(({ ws }) => ws.readyState === ws.OPEN)
+      connection = connection.filter(({ ws }) => ws.readyState !== ws.CLOSED)
     })
   })
 }
