@@ -62,9 +62,10 @@ class VideoPipe {
   }
 
   // 响应answer
-  accessAnswer = ({ icecandidades = [], answer = {} }) => {
-    icecandidades.forEach((condidate) => this.pc.addIceCandidate(new RTCIceCandidate(condidate)))
+  accessAnswer = (data) => {
+    const { icecandidades = [], answer = {} } = data
     this.pc.setRemoteDescription(answer)
+    icecandidades.forEach((condidate) => this.pc.addIceCandidate(new RTCIceCandidate(condidate)))
   }
 
   createOffer = () => {
@@ -143,9 +144,9 @@ export const initVideoPipe = async () => {
   }
 }
 
-export const accessAnswer = ({ addIceCandidate, answer }) => {
+export const accessAnswer = ({ icecandidades, answer }) => {
   if (!videoPipe) return
-  videoPipe.accessAnswer({ addIceCandidate, answer })
+  videoPipe.accessAnswer({ icecandidades, answer })
 }
 
 // 关闭视频通话
