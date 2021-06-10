@@ -14,6 +14,8 @@
         拨打好友视频
       </button>
     </div>
+
+    <div class="help">好友通过复制链接，可以直接加入视频通话</div>
   </div>
 
   <video-contact v-if="state.type" :type="state.type" />
@@ -97,5 +99,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+.help {
+  position: absolute;
+  text-align: center;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  color: #999;
 }
 </style>
